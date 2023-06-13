@@ -18,18 +18,34 @@ var (
 type Client firestore.Client
 
 type Firestore struct {
-	client     *Client
-	projectId  string
-	collection string
+	Client     *firestore.Client
+	ProjectId  string
+	Collection *firestore.CollectionRef
 }
 
-func (f *Firestore) SaveSecret(ctx context.Context, s *models.Secret) (uuid.UUID, error) {
+// Initialize a new store
+func NewFirestore(project, collection string) (*Firestore, error) {
+	client, err := firestore.NewClient(context.Background(), firestoreProjectId)
+	if err != nil {
+		return nil, fmt.Errorf("unable to make connection to firestore")
+	}
+
+	col := client.Collection(collection)
+
+	return &Firestore{
+		Client:     client,
+		Collection: col,
+		ProjectId:  project,
+	}, nil
+}
+
+func (f *Firestore) SaveSecret(s *models.Secret) (uuid.UUID, error) {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return id, fmt.Errorf("could not create an uuid")
 	}
 
-	_, err = f.client.Collection(f.collection).Doc(id).Set(ctx, s)
+	_, err = f.client.Collection(f.collection).Doc(id).Set(context.Background(), s)
 	if err != nil {
 		return id, fmt.Errorf("could not save to store")
 	}
@@ -38,10 +54,10 @@ func (f *Firestore) SaveSecret(ctx context.Context, s *models.Secret) (uuid.UUID
 }
 
 // Gets the secret from the store
-func (f *Firestore) GetSecret(ctx context.Context, id uuid.UUID) (*models.Secret, error) {
+func (f *Firestore) GetSecret(id uuid.UUID) (*models.Secret, error) {
 	var s models.Secret
 
-	snap, err := f.client.Collection(f.collection).Doc(id).Get(ctx)
+	snap, err := f.client.Collection(f.collection).Doc(id).Get(context.Background())
 	if err != nil {
 		return &s, fmt.Errorf("could not get secret: %v", err)
 	}
@@ -52,8 +68,8 @@ func (f *Firestore) GetSecret(ctx context.Context, id uuid.UUID) (*models.Secret
 }
 
 // Deleting a secret after it is returned to the client
-func (f *Firestore) DeleteSecret(ctx context.Context, s *models.Secret) error {
-	_, err := f.client.Collection(f.collection).Doc(s.ID).Delete(ctx)
+func (f *Firestore) DeleteSecret(s *models.Secret) error {
+	_, err := f.client.Collection(f.collection).Doc(s.ID).Delete(context.Background())
 	if err != nil {
 		return fmt.Errorf("could not delete %v from store", s.ID)
 	}
@@ -63,17 +79,4 @@ func (f *Firestore) DeleteSecret(ctx context.Context, s *models.Secret) error {
 // Gets all the secrets older then the limited time and deletes it.
 func (f *Firestore) DeleteAllPasedTTLSecrets(t time.Time) error {
 	return nil
-}
-
-// Initialize a new store
-func NewFireBaseStore(ctx context.Context) (*Firestore, error) {
-	client, err := firestore.NewClient(ctx, firestoreProjectId)
-	if err != nil {
-		return nil, fmt.Errorf("unable to make connection to firestore")
-	}
-
-	return &Firestore{
-		client:     client,
-		collection: collection,
-	}, nil
 }

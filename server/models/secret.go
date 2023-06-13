@@ -7,8 +7,8 @@ import (
 )
 
 type Secret struct {
-	ID          uuid.UUID
-	Secret      string `json:"secret"`
-	Description string `json:"description"`
+	ID          uuid.UUID `json:"id"`
+	Secret      string    `json:"secret"`
+	Description string    `json:"description"`
 	Timestamp   time.Time
 }

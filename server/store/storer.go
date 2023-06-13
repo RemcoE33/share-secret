@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Store interface {
+type Storer interface {
 	SaveSecret(ctx context.Context, secret *models.Secret) (uuid.UUID, error)
 	GetSecret(ctx context.Context, id uuid.UUID) (models.Secret, error)
 	DeleteSecret(ctx context.Context, secret *models.Secret) error
