@@ -9,7 +9,8 @@ when saved the user gets an url back. This can be shared and opend once. If the 
   - google uuid
   - interfaces for the db
     - sample with firestore
-    - sample with embedded sqlite
 - SvelteKit frontend
   - [DaisyUi](DaisyUi.com) components
   - TailwindCSS
+
+

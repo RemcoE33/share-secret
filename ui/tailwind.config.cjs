@@ -7,6 +7,11 @@ const config = {
   },
 
   plugins: [require("daisyui")],
+
+  daisyui: {
+    themes: false,
+    darkTheme: "dark",
+  },
 };
 
 module.exports = config;
