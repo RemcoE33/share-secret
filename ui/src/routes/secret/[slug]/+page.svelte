@@ -6,7 +6,7 @@
   import { getSecret } from './fetch.js'
   import { lang } from '$lib/lang' 
   export let data
-  let sl = lang.en
+  let sl = lang.nl
   let showSecret = false
   /** @type {import('./fetch.js').Secret} */
   let secretObj

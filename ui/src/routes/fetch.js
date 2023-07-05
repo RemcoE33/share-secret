@@ -14,7 +14,7 @@ import { encrypt } from '$lib/aes'
 export async function createSecret(secret, days) {
   const { key, ciphertext } = encrypt(secret)
   const payload = {
-    ciphertext,
+    secret: ciphertext,
     days
   };
   const resp = await fetch("/api/secret", {

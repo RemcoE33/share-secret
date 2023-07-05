@@ -6,7 +6,7 @@
   export let sl
 
   function copyToClipboard() {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(message);
     reset()
   }
 </script>

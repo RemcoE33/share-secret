@@ -11,32 +11,24 @@ import { decrypt } from '$lib/aes'
  * @param {string} password 
  * @returns {Promise<Secret>}
 */
-// export async function getSecret(password, id) {
-//   password = password.trim()
-//   const res = await fetch(`/api/secret/${id}`)
-//   const data = await res.json()
-//   let status = res.status
-//   let secret = data?.secret
-//
-//   if (status < 400){
-//     try {
-//      secret = decrypt(secret, password)
-//
-//     } catch(e){
-//      status = 500
-//     }
-//   }
-//
-//   return {
-//     status,
-//     secret
-//   }
-// }
+export async function getSecret(password, id) {
+  password = password.trim()
+  const res = await fetch(`/api/secret/${id}`)
+  const data = await res.json()
+  let status = res.status
+  let secret = data?.secret
 
-export async function getSecret(password, id){
+  if (status < 400){
+    try {
+     secret = decrypt(secret, password)
+
+    } catch(e){
+     status = 500
+    }
+  }
+
   return {
-    status: 200,
-    secret: "Some real love!"
+    status,
+    secret
   }
 }
-

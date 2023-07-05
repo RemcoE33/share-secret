@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/RemcoE33/share-secret/handlers"
 	"github.com/RemcoE33/share-secret/store"
@@ -19,7 +20,7 @@ var svelteStatic embed.FS
 var (
 	project    string = "ghco-invest" //firestore projects
 	collection string = "secrets"     //firestore collection
-	port       string = ":8082"
+	port       string = ":8080"
 )
 
 func main() {
@@ -49,6 +50,12 @@ func main() {
 	// API endpooints
 	r.Post("/api/secret", server.HandleCreateSecret)
 	r.Get("/api/secret/{id}", server.HandleGetSecret)
+
+	p := os.Getenv("PORT")
+
+	if p != "" {
+		port = p
+	}
 
 	fmt.Println("Running on port: ", port)
 	log.Fatal(http.ListenAndServe(port, r))

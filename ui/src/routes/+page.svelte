@@ -8,7 +8,7 @@
   /** @type {import('$lib/lang.js').Languages} */
   import { lang } from '$lib/lang.js'
   /** @type {import('$lib/lang.js').Language} */
-  let sl = lang.en
+  let sl = lang.nl
   let secret = ''
   let days = 7
   let message = ''
