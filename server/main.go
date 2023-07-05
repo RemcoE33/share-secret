@@ -54,7 +54,7 @@ func main() {
 	p := os.Getenv("PORT")
 
 	if p != "" {
-		port = p
+		port = ":" + p
 	}
 
 	fmt.Println("Running on port: ", port)
